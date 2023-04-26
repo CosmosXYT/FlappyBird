@@ -41,6 +41,28 @@
           bird.velocity = -10;
         }
       });
+      
+      // Handle canvas click to restart the game
+      canvas.addEventListener("click", function() {
+        // Reset game variables
+        score = 0;
+        gameOver = false;
+        bird = {
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          velocity: 0,
+          gravity: 0.5,
+          size: 20,
+        };
+        pipe = {
+          x: canvas.width,
+          gap: 100,
+          width: 30,
+          speed: 2,
+          height: canvas.height - 50 - 100 * Math.random(),
+        };
+        gameLoop();
+      });
 
       // Main game loop
       function gameLoop() {
@@ -90,14 +112,4 @@
 
         // Game over screen
         if (gameOver) {
-          ctx.fillText("Game Over!", canvas.width / 2 - 80, canvas.height / 2);
-        } else {
-          requestAnimationFrame(gameLoop);
-        }
-      }
-
-      // Start game loop
-      gameLoop();
-    </script>
-  </body>
-</html>
+          ctx.fillText("Game Over!", canvas.width
