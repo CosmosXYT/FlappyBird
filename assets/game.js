@@ -6,6 +6,7 @@ const height = canvas.height = window.innerHeight;
 
 let animationId;
 let score = 0;
+let isGameOver = false;
 
 class Cactus {
   constructor() {
@@ -67,7 +68,26 @@ class Player {
 const player = new Player();
 const cacti = [];
 
+function startScreen() {
+  ctx.fillStyle = 'black';
+  ctx.font = '32px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('Press space to start', width / 2, height / 2);
+}
+
+function gameOverScreen() {
+  ctx.fillStyle = 'black';
+  ctx.font = '32px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(`Game over! Your score is ${score}. Press space to restart.`, width / 2, height / 2);
+}
+
 function loop() {
+  if (isGameOver) {
+    gameOverScreen();
+    return;
+  }
+
   animationId = requestAnimationFrame(loop);
 
   ctx.clearRect(0, 0, width, height);
@@ -84,13 +104,7 @@ function loop() {
     cactus.update();
 
     if (cactus.isCollidingWith(player)) {
-      cancelAnimationFrame(animationId);
-      alert(`Game over! Your score is ${score}.`);
-      score = 0;
-      cacti.length = 0;
-      player.y = height - player.height;
-      player.dy = 0;
-      loop();
+      isGameOver = true;
     }
 
     if (cactus.x + cactus.width < 0) {
@@ -110,9 +124,11 @@ function scoreText() {
 
 document.addEventListener('keydown', event => {
   if (event.code === 'Space') {
-    player.jump();
-  }
-});
-
-loop();
-}
+    if (isGameOver) {
+      isGameOver = false;
+      score = 0;
+      cacti.length = 0;
+      player.y = height - player.height;
+      player.dy = 0;
+      loop();
+    }
