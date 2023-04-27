@@ -41,7 +41,7 @@
           bird.velocity = -10;
         }
       });
-      
+
       // Handle canvas click to restart the game
       canvas.addEventListener("click", function() {
         // Reset game variables
@@ -112,4 +112,11 @@
 
         // Game over screen
         if (gameOver) {
-          ctx.fillText("Game Over!", canvas.width
+          ctx.font = "50px Arial";
+          ctx.fillText("Game Over!", canvas.width / 2 - 150, canvas.height / 2);
+        } else {
+          window.requestAnimationFrame(gameLoop);
+        }
+      }
+
+     
